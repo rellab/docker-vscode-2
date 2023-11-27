@@ -16,4 +16,4 @@ mkdir -p $VSCODE_HOME
 chown $VSCODE_USER:$VSCODE_GROUP $VSCODE_HOME
 su - $VSCODE_USER -c "cp -n -r --preserve=mode /etc/skel/. $VSCODE_HOME"
 
-su - $VSCODE_USER -c "/code.sh"
+su - $VSCODE_USER -c "/code.sh $VSCODE_TUNNEL $VSCODE_PROVIDER"

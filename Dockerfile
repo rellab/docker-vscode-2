@@ -24,7 +24,6 @@ RUN apt-get update &&\
     libgbm1 \
     libglib2.0-0 \
     libgtk-3-0 \
-    libgtk-4-1 \
     libnspr4 \
     libnss3  \
     libpango-1.0-0 \
@@ -57,6 +56,9 @@ ENV VSCODE_HOME       /home/vscode
 ENV VSCODE_UID        1000
 ENV VSCODE_GID        1000
 ENV VSCODE_GRANT_SUDO nopass
+
+ENV VSCODE_TUNNEL     vm
+ENV VSCODE_PROVIDER   github
 
 COPY ./entrypoint.sh /entrypoint.sh
 COPY ./code.sh /code.sh
