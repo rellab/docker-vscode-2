@@ -1,19 +1,9 @@
 #!/bin/bash
 
-groupadd -f -g $VSCODE_GID $VSCODE_GROUP
-useradd -d $VSCODE_HOME -u $VSCODE_UID -g $VSCODE_GID -s /bin/bash $VSCODE_USER
-usermod -a -G dialout $VSCODE_USER
+CODESTATUS=`$CODEBIN tunnel user show`
 
-echo "$VSCODE_USER:$VSCODE_PASSWORD" | chpasswd
-
-if [ $VSCODE_GRANT_SUDO = "yes" ]; then
-  echo "$VSCODE_USER ALL=(ALL) ALL" >> /etc/sudoers.d/$VSCODE_USER
-elif [ $VSCODE_GRANT_SUDO = "nopass" ]; then
-  echo "$VSCODE_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$VSCODE_USER
+if [ $CODESTATUS = "not logged in" ]; then
+    $CODEBIN tunnel user login --provider $CODEPROVIDER
 fi
 
-mkdir -p $VSCODE_HOME
-chown $VSCODE_USER:$VSCODE_GROUP $VSCODE_HOME
-su - $VSCODE_USER -c "cp -n -r --preserve=mode /etc/skel/. $VSCODE_HOME"
-
-su - $VSCODE_USER -c "/code.sh $VSCODE_TUNNEL $VSCODE_PROVIDER"
+$CODEBIN tunnel --name=$CODETUNNEL --accept-server-license-terms
