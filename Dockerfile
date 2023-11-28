@@ -1,23 +1,29 @@
-From nvidia/cuda:12.2.2-runtime-ubuntu22.04
+From nvidia/cuda:12.0.0-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update &&\
     apt-get install -y --no-install-recommends \
+    apt-transport-https \
     git \
+    gnupg \
     locales \
     sudo \
     whois \
     dumb-init \
     vim \
     curl \
-    wget \
-    gdebi &&\
+    wget &&\
     apt-get clean &&\
     rm -rf /var/lib/apt/lists/*
 
-RUN curl -L https://go.microsoft.com/fwlink/?LinkID=760868 -o /tmp/vscode.deb &&\
-    gdebi /tmp/vscode.deb &&\
-    rm /tmp/vscode.deb
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg &&\
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+
+RUN apt-get update &&\
+    apt-get install -y --no-install-recommends \
+    code &&\
+    apt-get clean &&\
+    rm -fr /var/lib/apt/lists/*
 
 RUN set -eux; \
     sed -i -E 's/# (en_US.UTF-8)/\1/' /etc/locale.gen; \
