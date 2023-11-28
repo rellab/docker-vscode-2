@@ -1,5 +1,4 @@
-ARG BASE=jupyterlab
-FROM ${BASE}
+FROM jupyter/datascience-notebook:latest
 
 USER root
 
@@ -90,5 +89,5 @@ COPY ./code.sh /code.sh
 
 USER jovyan
 
-ENTRYPOINT ["/code.sh", "$VSCODE_TUNNEL", "$VSCODE_PROVIDER"]
+ENTRYPOINT ["/code.sh", "vm", "github"]
 
